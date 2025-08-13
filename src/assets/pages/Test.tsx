@@ -54,7 +54,7 @@ interface StreakInfo {
 
 const DEFAULT_BOSS: Boss = {
   name: "The Early Boss",
-  image: "./src/assets/img/boss.png", // normal image
+  image: "./public/img/boss.png", // normal image
   hp: 1000000000000,
   maxHp: 1000000000000,
 };
@@ -226,7 +226,7 @@ export default function App() {
   const hpPercent = Math.max(0, Math.min(100, (boss.hp / boss.maxHp) * 100));
 
   // Gambar tangisan kesakitan
-  const cryingImage = "./src/assets/img/crying.png"; // ganti path sesuai file kamu
+  const cryingImage = "./public/img/crying.png"; // ganti path sesuai file kamu
 
   return (
     <div className="min-h-screen bg-ethos text-gray-100 flex flex-col items-center p-6">
