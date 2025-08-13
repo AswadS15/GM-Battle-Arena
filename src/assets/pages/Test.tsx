@@ -131,6 +131,27 @@ export default function App() {
     return () => unsub();
   }, [db]);
 
+  // function formatTime(ts: number) {
+  //   const d = new Date(ts);
+  //   return `${d.getHours()}:${d.getMinutes().toString().padStart(2, "0")}`;
+  // }
+
+  const [now, setNow] = useState(Date.now());
+
+  useEffect(() => {
+    const id = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  function timeAgo(ts: number) {
+    const diff = Math.floor((now - ts) / 1000); // selisih dalam detik
+    if (diff < 60) return `${diff} sec ago`;
+    const min = Math.floor(diff / 60);
+    if (min < 60) return `${min} min ago`;
+    const h = Math.floor(min / 60);
+    return `${h} h ago`;
+  }
+
   // Messages
   useEffect(() => {
     const messagesRef = query(ref(db, "messages"), limitToLast(50));
@@ -140,7 +161,8 @@ export default function App() {
         const v = child.val();
         if (v) arr.push(v);
       });
-      arr.sort((a, b) => (a.ts ?? 0) - (b.ts ?? 0));
+      arr.sort((a, b) => (b.ts ?? 0) - (a.ts ?? 0));
+
       setMessages(arr);
     });
     return () => unsub();
@@ -331,16 +353,19 @@ export default function App() {
           <h2 className="text-lg font-semibold text-white mb-2">Global Feed</h2>
           <div className="flex-1 overflow-y-auto space-y-2 pr-1">
             {messages.map((m, i) => (
-              <div key={i} className="text-sm flex items-start gap-2">
-                <span className="text-emerald-400 font-semibold shrink-0">
-                  {m.username}
-                </span>
-                <span className="text-gray-200">
+              <div key={i} className="text-sm flex flex-col gap-1">
+                <div className="flex items-center gap-2">
+                  <span className="text-green-500 font-semibold shrink-0 ">
+                    {m.username}
+                  </span>
+                  <span className="text-gray-600 text-xs">{timeAgo(m.ts)}</span>
+                </div>
+                <div className="text-gray-200">
                   {m.text}
                   {m.damage ? (
-                    <span className="ml-2 text-red-400">- {m.damage} HP</span>
+                    <span className="ml-2 text-red-500">- {m.damage} HP</span>
                   ) : null}
-                </span>
+                </div>
               </div>
             ))}
           </div>
