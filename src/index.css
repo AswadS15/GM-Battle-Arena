@@ -1,0 +1,12 @@
+@import "tailwindcss";
+.bg-ethos {
+  background: linear-gradient(
+    135deg,
+    #d8b4fe,
+    #f9a8d4,
+    #fdba74,
+    #fef9c3,
+    #bbf7d0,
+    #bae6fd
+  );
+}
